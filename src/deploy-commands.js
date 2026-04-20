@@ -28,7 +28,7 @@ const commands = [
         .setRequired(true))
     .addChannelOption(o =>
       o.setName('channel')
-        .setDescription('Voice Channel')
+        .setDescription('Voice channel')
         .addChannelTypes(
           ChannelType.GuildVoice,
           ChannelType.GuildStageVoice
@@ -36,16 +36,8 @@ const commands = [
         .setRequired(true)),
 
   new SlashCommandBuilder()
-    .setName('tone')
-    .setDescription('Test tone')
-    .addChannelOption(o =>
-      o.setName('channel')
-        .setDescription('Voice Channel')
-        .addChannelTypes(
-          ChannelType.GuildVoice,
-          ChannelType.GuildStageVoice
-        )
-        .setRequired(true)),
+    .setName('queue')
+    .setDescription('Show queue'),
 
   new SlashCommandBuilder()
     .setName('skip')
@@ -60,8 +52,8 @@ const commands = [
     .setDescription('Leave VC'),
 
   new SlashCommandBuilder()
-    .setName('queue')
-    .setDescription('Show queue')
+    .setName('help')
+    .setDescription('Help menu')
 ].map(c => c.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(token);
@@ -71,4 +63,4 @@ await rest.put(
   { body: commands }
 );
 
-console.log("✅ Commands deployed");
+console.log("✅ Slash commands deployed");
