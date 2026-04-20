@@ -6,10 +6,7 @@ import {
   ChannelType
 } from 'discord.js';
 
-const token =
-  process.env.DISCORD_TOKEN ||
-  process.env.BOT_TOKEN ||
-  process.env.TOKEN;
+const token = process.env.DISCORD_TOKEN;
 
 if (!token) throw new Error("DISCORD_TOKEN missing");
 
@@ -33,6 +30,25 @@ client.on(Events.InteractionCreate, async interaction => {
     return interaction.reply('🏓 Pong!');
   }
 
+  if (cmd === 'play') {
+    const query = interaction.options.getString('query');
+    const channel = interaction.options.getChannel('channel');
+
+    if (!channel || ![
+      ChannelType.GuildVoice,
+      ChannelType.GuildStageVoice
+    ].includes(channel.type)) {
+      return interaction.reply({
+        content: '❌ Select a voice channel',
+        ephemeral: true
+      });
+    }
+
+    return interaction.reply(
+      `🎵 Playing: ${query}\n📢 VC: ${channel.name}`
+    );
+  }
+
   if (cmd === 'queue') {
     return interaction.reply('📜 Queue empty');
   }
@@ -49,38 +65,17 @@ client.on(Events.InteractionCreate, async interaction => {
     return interaction.reply('👋 Left VC');
   }
 
-  if (cmd === 'tone') {
-    const channel = interaction.options.getChannel('channel');
-    if (!channel || ![
-      ChannelType.GuildVoice,
-      ChannelType.GuildStageVoice
-    ].includes(channel.type)) {
-      return interaction.reply({
-        content: '❌ Select voice channel',
-        ephemeral: true
-      });
-    }
-
-    return interaction.reply(`🔊 Test tone in ${channel.name}`);
-  }
-
-  if (cmd === 'play') {
-    const query = interaction.options.getString('query');
-    const channel = interaction.options.getChannel('channel');
-
-    if (!channel || ![
-      ChannelType.GuildVoice,
-      ChannelType.GuildStageVoice
-    ].includes(channel.type)) {
-      return interaction.reply({
-        content: '❌ Select voice channel',
-        ephemeral: true
-      });
-    }
-
-    return interaction.reply(
-      `🎵 Playing: ${query}\n📢 Channel: ${channel.name}`
-    );
+  if (cmd === 'help') {
+    return interaction.reply(`
+🎵 Commands:
+/ping
+/play
+/queue
+/skip
+/stop
+/leave
+/help
+`);
   }
 });
 
