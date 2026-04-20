@@ -6,7 +6,13 @@ import {
   ChannelType
 } from 'discord.js';
 
-const token = process.env.DISCORD_TOKEN;
+const token = String(process.env.DISCORD_TOKEN || '')
+  .trim()
+  .replace(/^["']|["']$/g, '');
+
+console.log("TOKEN LENGTH:", token.length);
+console.log("TOKEN DOTS:", (token.match(/\./g) || []).length);
+console.log("TOKEN START:", token.slice(0, 12));
 
 if (!token) throw new Error("DISCORD_TOKEN missing");
 
