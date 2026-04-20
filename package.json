@@ -1,7 +1,7 @@
 {
-  "name": "rvxth-djv1-fixed",
+  "name": "rvxth-djv1-final",
   "version": "1.0.0",
-  "description": "Discord music bot fixed version",
+  "description": "Final Discord Music Bot",
   "main": "src/index.js",
   "type": "module",
   "engines": {
