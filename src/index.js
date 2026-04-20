@@ -1,3 +1,4 @@
+
 import 'dotenv/config';
 import {
   Client,
@@ -6,15 +7,14 @@ import {
   ChannelType
 } from 'discord.js';
 
-const token = String(process.env.DISCORD_TOKEN || '')
-  .trim()
-  .replace(/^["']|["']$/g, '');
+const token = String(process.env.DISCORD_TOKEN || '').trim();
 
-console.log("TOKEN LENGTH:", token.length);
-console.log("TOKEN DOTS:", (token.match(/\./g) || []).length);
-console.log("TOKEN START:", token.slice(0, 12));
+if (!token) {
+  throw new Error('DISCORD_TOKEN missing');
+}
 
-if (!token) throw new Error("DISCORD_TOKEN missing");
+console.log('TOKEN LENGTH:', token.length);
+console.log('TOKEN DOTS:', (token.match(/\./g) || []).length);
 
 const client = new Client({
   intents: [
@@ -36,23 +36,17 @@ client.on(Events.InteractionCreate, async interaction => {
     return interaction.reply('🏓 Pong!');
   }
 
-  if (cmd === 'play') {
-    const query = interaction.options.getString('query');
-    const channel = interaction.options.getChannel('channel');
-
-    if (!channel || ![
-      ChannelType.GuildVoice,
-      ChannelType.GuildStageVoice
-    ].includes(channel.type)) {
-      return interaction.reply({
-        content: '❌ Select a voice channel',
-        ephemeral: true
-      });
-    }
-
-    return interaction.reply(
-      `🎵 Playing: ${query}\n📢 VC: ${channel.name}`
-    );
+  if (cmd === 'help') {
+    return interaction.reply(`
+🎵 Commands:
+/ping
+/help
+/play
+/queue
+/skip
+/stop
+/leave
+`);
   }
 
   if (cmd === 'queue') {
@@ -71,17 +65,26 @@ client.on(Events.InteractionCreate, async interaction => {
     return interaction.reply('👋 Left VC');
   }
 
-  if (cmd === 'help') {
-    return interaction.reply(`
-🎵 Commands:
-/ping
-/play
-/queue
-/skip
-/stop
-/leave
-/help
-`);
+  if (cmd === 'play') {
+    const query = interaction.options.getString('query');
+    const channel = interaction.options.getChannel('channel');
+
+    if (
+      !channel ||
+      ![
+        ChannelType.GuildVoice,
+        ChannelType.GuildStageVoice
+      ].includes(channel.type)
+    ) {
+      return interaction.reply({
+        content: '❌ Select voice channel',
+        ephemeral: true
+      });
+    }
+
+    return interaction.reply(
+      `🎵 Playing: ${query}\n🔊 VC: ${channel.name}`
+    );
   }
 });
 
