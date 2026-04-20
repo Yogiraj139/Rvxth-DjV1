@@ -1,23 +1,18 @@
 {
-  "name": "rvxth-djv1-final",
+  "name": "rvxth-dj-final",
   "version": "1.0.0",
-  "description": "Final Discord Music Bot",
-  "main": "src/index.js",
+  "description": "Discord Slash Command Music Bot",
   "type": "module",
-  "engines": {
-    "node": "22.x"
-  },
+  "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "deploy": "node src/deploy-commands.js"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "discord.js": "^14.19.3",
-    "@discordjs/voice": "^0.19.0",
-    "dotenv": "^16.5.0",
-    "ffmpeg-static": "^5.2.0",
-    "libsodium-wrappers": "^0.7.15",
-    "opusscript": "^0.1.1",
-    "youtube-dl-exec": "^3.0.26"
+    "dotenv": "^16.5.0"
   }
 }
